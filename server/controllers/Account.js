@@ -5,11 +5,11 @@ const {
 } = models;
 
 const loginPage = (req, res) => {
-  res.render('login');
+  res.render('login', { csrfToken: req.csrfToken() });
 };
 
 const signupPage = (req, res) => {
-  res.render('signup');
+  res.render('signup', { csrfToken: req.csrfToken() });
 };
 
 const logout = (req, res) => {
@@ -101,11 +101,11 @@ const signup = (request, response) => {
     // });
 
     (new Account.AccountModel(accountData))
-    .save()
+      .save()
       .then(() => {
         req.session.account = Account.AccountModel.toAPI(this);
         return res.json({
-          redirect: '/maker'
+          redirect: '/maker',
         });
       })
       .catch((err) => {
@@ -113,16 +113,16 @@ const signup = (request, response) => {
 
         if (err.code === 11000) {
           return res.status(400).json({
-            error: 'Username already in use.'
+            error: 'Username already in use.',
           });
         }
 
         return res.status(400).json({
-          error: 'An error occurred'
+          error: 'An error occurred',
         });
       });
   });
-}
+};
 
 module.exports.loginPage = loginPage;
 module.exports.login = login;
