@@ -15,6 +15,17 @@ const makerPage = (req, res) => {
   });
 };
 
+const randomPage = (req, res) => {
+  Domo.DomoModel.findByOwner(req.session.account._id, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occurred' });
+    }
+
+    return res.render('random', { csrfToken: req.csrfToken(), domos: docs });
+  });
+};
+
 const makeDomo = (req, res) => {
   if (!req.body.name || !req.body.age || !req.body.level) {
     return res.status(400).json({ error: 'RAWR! Name, age, and level are all required' });
@@ -62,3 +73,4 @@ const getDomos = (request, response) => {
 module.exports.makerPage = makerPage;
 module.exports.getDomos = getDomos;
 module.exports.make = makeDomo;
+module.exports.randomPage = randomPage;
